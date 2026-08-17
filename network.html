@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centauri Networks | DOOH Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* RESET EVERYTHING TO ENSURE NO OVERLAP */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        html, body { width: 100%; height: 100%; background: #000; color: #fff; overflow: hidden; }
+
+        :root {
+            --primary: #00f2ff;
+            --bg: #050505;
+            --card: #121212;
+            --accent: #ff0050;
+        }
+
+        /* --- 1. GATEWAY PAGE (ALWAYS ON TOP INITIALLY) --- */
+        #gateway {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; transition: all 0.8s ease-in-out;
+        }
+        
+        .gateway-content { width: 90%; max-width: 1000px; }
+        .gateway-content h1 { font-size: clamp(30px, 5vw, 60px); font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
+        .gateway-content h1 span { color: var(--primary); }
+        .gateway-content p { color: #666; margin-bottom: 40px; letter-spacing: 2px; }
+        
+        .city-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; width: 100%; }
+        .city-btn {
+            background: #111; border: 1px solid #333; color: white; padding: 25px;
+            border-radius: 12px; cursor: pointer; transition: 0.3s;
+        }
+        .city-btn:hover { border-color: var(--primary); background: #1a1a1a; transform: translateY(-5px); }
+        .city-btn h3 { font-size: 1.1rem; margin-bottom: 5px; }
+        .city-btn span { color: var(--primary); font-size: 0.75rem; font-weight: 600; }
+
+        .city-actions {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+        }
+        .city-analytics-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            background: rgba(0, 242, 255, 0.08);
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .4px;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+        .city-analytics-btn:hover {
+            background: var(--primary);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 0 18px rgba(0, 242, 255, .25);
+        }
+
+        /* --- 2. DASHBOARD (HIDDEN UNTIL CITY PICKED) --- */
+        #dashboard { 
+            display: none; height: 100vh; width: 100%; 
+            background: var(--bg); overflow-y: auto; position: relative;
+        }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; position: sticky; top: 0;
+            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(10px); z-index: 100;
+            border-bottom: 1px solid #222;
+        }
+        .logo { font-size: 20px; font-weight: 800; }
+        .logo span { color: var(--primary); }
+        .back-btn { background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 800; }
+
+        /* Sections */
+        section { width: 100%; padding: 60px 5%; display: flex; flex-direction: column; align-items: center; }
+        
+        .monitor-header { text-align: center; margin-bottom: 30px; }
+        .monitor-header h2 { font-size: clamp(40px, 6vw, 80px); color: var(--primary); text-transform: uppercase; }
+
+        /* Billboard Video Frame */
+        .billboard-frame {
+            position: relative; width: 100%; max-width: 800px;
+            background: #1a1a1a; padding: 15px; border-radius: 10px; border: 1px solid #333;
+        }
+        .screen { aspect-ratio: 30 / 25; background: #000; position: relative; border: 4px solid #000; overflow: hidden; }
+        .screen video { width: 100%; height: 100%; object-fit: cover; }
+        .live-tag { position: absolute; top: 12px; left: 12px; background: var(--accent); padding: 4px 10px; font-weight: 800; border-radius: 3px; font-size: 10px; animation: blink 1s infinite; z-index: 10; }
+        @keyframes blink { 50% { opacity: 0.4; } }
+
+        /* --- TELEMETRY OVERLAY UI --- */
+        .top-smart-bar {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            border-left: 3px solid var(--primary);
+            z-index: 10;
+            display: flex;
+            gap: 12px;
+            letter-spacing: 0.5px;
+        }
+        .top-smart-bar span { display: inline-flex; align-items: center; }
+        .top-smart-bar .highlight { color: var(--primary); margin-left: 4px; }
+
+        .bottom-ticker-tape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 2px solid var(--primary);
+            padding: 8px 0;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            z-index: 10;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        /* --- FLOATING QR CODE BADGE (MOVED UP ABOVE TICKER) --- */
+        .qr-badge {
+            position: absolute;
+            bottom: 45px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 242, 255, 0.3);
+            border: 2px solid var(--primary);
+            z-index: 10;
+            width: 95px;
+            text-align: center;
+            animation: qrPulse 2.5s infinite ease-in-out;
+        }
+        
+        .qr-badge img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .qr-badge span {
+            color: #000;
+            font-size: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        @keyframes qrPulse {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2); }
+            50% { transform: scale(1.04); box-shadow: 0 4px 25px rgba(0, 242, 255, 0.5); border-color: var(--accent); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2); }
+        }
+
+        /* Technical Data Cards */
+        .tech-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 50px; }
+        .tech-card { background: var(--card); padding: 30px; border-radius: 15px; border: 1px solid #222; }
+        .tech-card h3 { color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; font-size: 1.2rem; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        td { padding: 12px 0; border-bottom: 1px solid #222; font-size: 13px; }
+        td:last-child { text-align: right; font-weight: 800; }
+
+        /* Form */
+        .form-box { background: var(--card); padding: 40px; border-radius: 20px; width: 100%; max-width: 500px; border: 1px solid #222; margin-top: 50px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 5px; }
+        .sub-btn { width: 100%; padding: 15px; background: var(--primary); color: #000; border: none; font-weight: 800; border-radius: 5px; cursor: pointer; text-transform: uppercase; }
+
+        footer { text-align: center; padding: 40px; color: #444; font-size: 11px; }
+    </style>
+</head>
+<body><style>.unified-nav{position:fixed;top:14px;right:28px;z-index:100000;display:flex;gap:8px;align-items:center;background:rgba(5,8,16,.82);border:1px solid rgba(0,212,255,.28);backdrop-filter:blur(14px);padding:8px;border-radius:14px}.unified-nav a{color:#fff;text-decoration:none;font:600 12px Arial,sans-serif;padding:10px 13px;border-radius:9px;border:1px solid transparent}.unified-nav a:hover{border-color:#00d4ff;color:#00d4ff}.unified-nav .brand{color:#00d4ff;font-weight:800;letter-spacing:1px}</style><div class="unified-nav"><a class="brand" href="/">CENTAURI</a><a href="/network">All Cities</a><a href="/ai">AI Live Analytics</a></div>
+
+    <div id="gateway">
+        <div class="gateway-content">
+            <h1>CENTAURI<span>NETWORKS</span></h1>
+            <p>DOOH MONITORING INTERFACE v2.0</p>
+            <div class="city-grid">
+                <div class="city-btn" onclick="startMonitor('MUMBAI')">
+                    <h3>MUMBAI</h3><span>Western Express Hwy</span>
+                    <div class="city-actions">
+                        <a class="city-analytics-btn" href="/ai?city=MUMBAI" onclick="event.stopPropagation();">📊 LIVE AI ANALYTICS</a>
+                    </div>
+                </div>
+                <div class="city-btn" onclick="startMonitor('DELHI')">
+                    <h3>DELHI</h3><span>Airport Road NH-48</span>
+                    <div class="city-actions">
+                        <a class="city-analytics-btn" href="/ai?city=DELHI" onclick="event.stopPropagation();">📊 LIVE AI ANALYTICS</a>
+                    </div>
+                </div>
+                <div class="city-btn" onclick="startMonitor('BANGALORE')">
+                    <h3>BANGALORE</h3><span>Electronic City</span>
+                    <div class="city-actions">
+                        <a class="city-analytics-btn" href="/ai?city=BANGALORE" onclick="event.stopPropagation();">📊 LIVE AI ANALYTICS</a>
+                    </div>
+                </div>
+                <div class="city-btn" onclick="startMonitor('PUNE')">
+                    <h3>PUNE</h3><span>Expressway Entry</span>
+                    <div class="city-actions">
+                        <a class="city-analytics-btn" href="/ai?city=PUNE" onclick="event.stopPropagation();">📊 LIVE AI ANALYTICS</a>
+                    </div>
+                </div>
+                <div class="city-btn" onclick="startMonitor('HYDERABAD')">
+                    <h3>HYDERABAD</h3><span>HITEC City ORR</span>
+                    <div class="city-actions">
+                        <a class="city-analytics-btn" href="/ai?city=HYDERABAD" onclick="event.stopPropagation();">📊 LIVE AI ANALYTICS</a>
+                    </div>
+                </div>
+                <div class="city-btn" onclick="startMonitor('GLOBAL')">
+                    <h3>ALL SITES</h3><span>Full Network</span>
+                    <div class="city-actions">
+                        <a class="city-analytics-btn" href="/ai?city=GLOBAL" onclick="event.stopPropagation();">📊 LIVE AI ANALYTICS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <nav>
+            <div class="logo">CENTAURI<span>NETWORKS</span></div>
+            <button class="back-btn" onclick="stopMonitor()">← BACK</button>
+        </nav>
+
+        <section>
+            <div class="monitor-header">
+                <p style="color: #666; letter-spacing: 3px; font-weight: 800;">LIVE FEED ACTIVE</p>
+                <h2 id="activeCity">CITY</h2>
+            </div>
+
+            <div class="billboard-frame">
+                <div class="live-tag">● LIVE MIRRORING</div>
+                
+                <div class="screen">
+                    <!-- Live Media Element -->
+                    <!-- Live Media Element (Replaced with Image) -->
+                    <img id="screenImage" src="https://www.topgear.com/sites/default/files/2022/10/0%20Porsche%20911%20GT3%20RS.jpg?w=892&h=502" alt="Billboard Feed" style="width: 100%; height: 100%; object-fit: cover;">
+
+                    <!-- TOP TELEMETRY: Clock, Weather, AQI -->
+                    <div class="top-smart-bar">
+                        <span id="liveClock">00:00:00 AM</span>
+                        <span>TEMP:<span class="highlight" id="topTemp">31°C</span></span>
+                        <span>AQI:<span class="highlight" id="topAqi">45</span></span>
+                    </div>
+
+                    <!-- FLOATING QR BADGE -->
+                    <div class="qr-badge">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://forms.google.com" alt="Scan to Win">
+                        <span>SCAN & WIN!<br><small style="color:var(--accent); font-size:7px;">LUCKY DRAW LIVE</small></span>
+                    </div>
+
+                    <!-- BOTTOM TELEMETRY: Moving Congestion Ticker Tape -->
+                    <div class="bottom-ticker-tape">
+                        <marquee scrollamount="5" id="trafficTicker">LOADING CITY DATA...</marquee>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-container">
+                <div class="tech-card">
+                    <h3>Site Architecture</h3>
+                    <table>
+                        <tr><td>Pillars</td><td>3x Reinforced Steel</td></tr>
+                        <tr><td>Dimensions</td><td>30' x 25' Dual-Sided</td></tr>
+                        <tr><td>Safety</td><td>150 km/h Wind Rated</td></tr>
+                    </table>
+                </div>
+                <div class="tech-card">
+                    <h3>Display Tech</h3>
+                    <table>
+                        <tr><td>Pixel Pitch</td><td>P8 HD Outdoor</td></tr>
+                        <tr><td>Brightness</td><td>6500 Nits (Auto)</td></tr>
+                        <tr><td>Control</td><td>Cloud IoT Sync</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-box">
+                <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary);">PARTNER WITH US</h3>
+                <input type="text" placeholder="Brand Name">
+                <input type="email" placeholder="Email Address">
+                <textarea placeholder="Campaign Details..." rows="3"></textarea>
+                <button class="sub-btn">Request Pitch Deck</button>
+            </div>
+            
+            <footer>© 2025 CENTAURI NETWORKS | SMART HIGHWAY MEDIA</footer>
+        </section>
+    </div>
+
+    <script>
+        // City-Specific Metadata Engine
+        const cityData = {
+            'MUMBAI': {
+                temp: '29°C',
+                aqi: '68 (Moderate)',
+                ticker: '⚠️ TRAFFIC: Heavy congestion near Western Express Highway Flyover. Expected delay: 14 mins. || CONGRATS to Suresh M. from Bandra for winning the hourly bumper cash prize! || Scan QR code to enter...',
+                video: 'https://www.topgear.com/sites/default/files/2022/10/0%20Porsche%20911%20GT3%20RS.jpg?w=892&h=502.jpg'
+            },
+            'DELHI': {
+                temp: '34°C',
+                aqi: '142 (Poor)',
+                ticker: '⚠️ TRAFFIC: Smooth flow on Airport Road NH-48. Speed limits enforced. || CONGRATS to Priya G. from Dwarka for winning the ₹1,000 gift voucher! || Scan QR code to enter...',
+                video: 'https://i.pinimg.com/originals/c4/9d/e5/c49de5491ac6065176c502d5caeadf7b.jpg'
+            },
+            'BANGALORE': {
+                temp: '26°C',
+                aqi: '38 (Good)',
+                ticker: '⚠️ TRAFFIC: Waterlogging alert near Silk Board towards Electronic City Tollway. Move safely. || CONGRATS to Nitin K. from Koramangala for winning a free brand hamper! || Scan QR code to enter...',
+                video: 'https://gizmodo.com/app/uploads/2026/02/Galaxy-S26-Series.jpg'
+            },
+            'PUNE': {
+                temp: '28°C',
+                aqi: '45 (Good)',
+                
+                ticker: '⚠️ TRAFFIC: Clear lanes at Pune-Mumbai Expressway Entrance. Driving conditions ideal. || CONGRATS to Amit S. from Wakad for winning the daily gadget prize giveaway! || Scan QR code to enter...',
+                video: 'https://i.ytimg.com/vi/z8C0AZBd4Es/hqdefault.jpg'
+            },
+            'HYDERABAD': {
+                temp: '32°C',
+                aqi: '52 (Satisfactory)',
+                ticker: '⚠️ TRAFFIC: Peak hour slow down on HITEC City ORR Phase 2. Lane discipline requested. || CONGRATS to Vikram R. from Gachibowli for winning an Amazon Gift Card! || Scan QR code to enter...',
+                video: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNM4v0sMETnFPz-bxDpdIg_SMD8BJaOfOPcHg7zsLT5Z63rsYNwfAHGyF0YCOQmaXGyRAFBQTiZ1lM-dMCHs_J65TCBm7lYMI9fG9lmUiaIa0QiX_h5lZKHZAjaHVHyJ5_c38uKv_doARl-8UC29qJ_XXF05NfcHTGLU1OxydeMFJuSlpADORpA9RnZiCI/w1600/TANISHQ%20PRESENTS.jpg'
+            },
+            'GLOBAL': {
+                temp: '30°C',
+                aqi: '65',
+                ticker: '🌐 NETWORK STATUS: 5 Active Hubs Operational || 100% Cloud Synced || Dynamic Public Service Broadcast Enabled || Scan the QR Code on screen to participate in our ongoing corporate pitch challenge...',
+                video: 'https://assets.mixkit.co/videos/preview/mixkit-fast-driving-in-a-modern-car-at-night-34444-large.mp4'
+            }
+        };
+
+        // Live Real-Time Clock Initialization
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // convert 0 to 12
+            const strTime = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+            
+            const clockEl = document.getElementById('liveClock');
+            if (clockEl) clockEl.innerText = strTime;
+        }
+        setInterval(updateClock, 1000);
+
+        function startMonitor(city) {
+            // Update Text Headers
+            document.getElementById('activeCity').innerText = city;
+            
+            // Inject City Dashboard Telemetry Data
+            if(cityData[city]) {
+                document.getElementById('topTemp').innerText = cityData[city].temp;
+                document.getElementById('topAqi').innerText = cityData[city].aqi;
+                document.getElementById('trafficTicker').innerText = cityData[city].ticker;
+                
+                // Programmatic Contextual Video Change
+                // Programmatic Contextual Image Change
+const imageEl = document.getElementById('screenImage');
+if (imageEl) {
+    imageEl.src = cityData[city].video; // This will now fetch the URL mapped in cityData
+}
+            }
+
+            // UI Transitions
+            document.getElementById('gateway').style.transform = 'translateY(-100%)';
+            document.getElementById('dashboard').style.display = 'block';
+            document.body.style.overflowY = 'auto';
+            document.documentElement.style.overflowY = 'auto';
+            
+            // Immediate clock execution
+            updateClock();
+        }
+
+        function stopMonitor() {
+            document.getElementById('gateway').style.transform = 'translateY(0)';
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            setTimeout(() => {
+                document.getElementById('dashboard').style.display = 'none';
+                window.scrollTo(0,0);
+            }, 800);
+        }
+    </script>
+</body>
+</html>

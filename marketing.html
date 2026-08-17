@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Centauri Networks | AI Powered DOOH Advertising</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#050816;
+color:white;
+overflow-x:hidden;
+}
+
+/* Animated Background */
+
+body::before{
+content:'';
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at top left,#00d4ff22,transparent 35%),
+radial-gradient(circle at bottom right,#0066ff22,transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:'';
+position:fixed;
+width:200%;
+height:200%;
+background:
+linear-gradient(45deg,
+transparent,
+rgba(0,255,255,.04),
+transparent);
+animation:movebg 18s linear infinite;
+z-index:-1;
+}
+
+@keyframes movebg{
+
+0%{
+transform:translate(-25%,-25%);
+}
+
+100%{
+transform:translate(0%,0%);
+}
+
+}
+
+/* Navbar */
+
+nav{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:22px 8%;
+backdrop-filter:blur(14px);
+background:rgba(0,0,0,.35);
+z-index:999;
+
+}
+
+.logo{
+
+font-size:30px;
+font-weight:700;
+color:#00d4ff;
+
+}
+
+.logo span{
+
+color:white;
+
+}
+
+nav ul{
+
+display:flex;
+list-style:none;
+gap:35px;
+
+}
+
+nav ul li a{
+
+text-decoration:none;
+color:white;
+font-size:16px;
+transition:.3s;
+
+}
+
+nav ul li a:hover{
+
+color:#00d4ff;
+
+}
+
+/* Hero */
+
+.hero{
+
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 8%;
+
+}
+
+.left{
+
+width:55%;
+
+}
+
+.left h3{
+
+color:#00d4ff;
+font-size:24px;
+margin-bottom:10px;
+
+}
+
+.left h1{
+
+font-size:65px;
+line-height:1.1;
+margin-bottom:25px;
+
+}
+
+.left h1 span{
+
+color:#00d4ff;
+
+}
+
+.left p{
+
+font-size:19px;
+line-height:1.8;
+color:#d6d6d6;
+margin-bottom:40px;
+
+}
+
+.btn{
+
+display:inline-block;
+padding:16px 42px;
+border-radius:40px;
+background:#00d4ff;
+color:black;
+font-weight:600;
+text-decoration:none;
+transition:.4s;
+
+}
+
+.btn:hover{
+
+transform:translateY(-5px);
+box-shadow:0 0 25px #00d4ff;
+
+}
+
+.right{
+
+width:40%;
+display:flex;
+justify-content:center;
+
+}
+
+.circle{
+
+width:420px;
+height:420px;
+border-radius:50%;
+background:
+linear-gradient(135deg,#00d4ff,#0066ff);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:170px;
+font-weight:bold;
+box-shadow:0 0 70px rgba(0,212,255,.45);
+
+}
+
+/* About */
+
+.about{
+
+padding:110px 8%;
+
+}
+
+.section-title{
+
+font-size:45px;
+margin-bottom:25px;
+color:#00d4ff;
+
+}
+
+.about p{
+
+font-size:19px;
+line-height:2;
+color:#d8d8d8;
+
+}
+
+.highlight{
+
+color:#00d4ff;
+font-weight:600;
+
+}
+
+@media(max-width:1000px){
+
+.hero{
+
+flex-direction:column;
+justify-content:center;
+text-align:center;
+padding-top:120px;
+
+}
+
+.left{
+
+width:100%;
+
+}
+
+.right{
+
+margin-top:60px;
+width:100%;
+
+}
+
+.circle{
+
+width:300px;
+height:300px;
+font-size:120px;
+
+}
+
+.left h1{
+
+font-size:48px;
+
+}
+
+nav ul{
+
+display:none;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body><style>.unified-nav{position:fixed;top:14px;right:28px;z-index:100000;display:flex;gap:8px;align-items:center;background:rgba(5,8,16,.82);border:1px solid rgba(0,212,255,.28);backdrop-filter:blur(14px);padding:8px;border-radius:14px}.unified-nav a{color:#fff;text-decoration:none;font:600 12px Arial,sans-serif;padding:10px 13px;border-radius:9px;border:1px solid transparent}.unified-nav a:hover{border-color:#00d4ff;color:#00d4ff}.unified-nav .brand{color:#00d4ff;font-weight:800;letter-spacing:1px}</style><div class="unified-nav"><a class="brand" href="/">CENTAURI</a><a href="/network">All Cities</a><a href="/ai">AI Live Analytics</a></div>
+
+<nav>
+
+<div class="logo">
+Centauri <span>Networks</span>
+</div>
+
+<ul>
+
+<li><a href="#home">Home</a></li>
+
+<li><a href="#about">About</a></li>
+
+<li><a href="#features">Features</a></li>
+
+<li><a href="#contact">Contact</a></li>
+
+</ul>
+
+</nav>
+
+<section class="hero" id="home">
+
+<div class="left">
+
+<h3>AI Powered DOOH Advertising</h3>
+
+<h1>
+Transforming
+<span>Outdoor Advertising</span>
+into Interactive Experiences
+</h1>
+
+<p>
+
+Centauri Networks is an AI-powered Digital Out-of-Home advertising platform
+that combines audience analytics, cloud-based campaign management,
+and interactive QR-powered experiences to help brands engage people
+beyond traditional advertising.
+
+</p>
+
+<a href="#about" class="btn">
+Explore More
+</a>
+
+</div>
+
+<div class="right">
+
+<div class="circle">
+
+CN
+
+</div>
+
+</div>
+
+</section>
+
+<section class="about" id="about">
+
+<h2 class="section-title">
+
+About Centauri Networks
+
+</h2>
+
+<p>
+
+<span class="highlight">Centauri Networks</span> is redefining outdoor
+advertising by making digital billboards intelligent, interactive and
+measurable. Instead of displaying passive advertisements,
+our platform encourages audience participation through
+QR-based campaigns like <span class="highlight">Scan & Win</span>,
+<span class="highlight">Meet Your Icon</span>,
+and <span class="highlight">Celebrate with Centauri</span>.
+
+<br><br>
+
+By combining
+<span class="highlight">AI-powered audience analytics</span>,
+cloud-based content management and real-time engagement insights,
+brands can better understand campaign performance while creating
+memorable experiences for the public.
+
+</p>
+
+</section>
+<!-- ================= FEATURES ================= -->
+
+<section class="features" id="features">
+
+<h2 class="section-title">
+Why Centauri Networks?
+</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<div class="icon">📊</div>
+
+<h3>AI Audience Analytics</h3>
+
+<p>
+
+Estimate audience count, identify peak audience hours,
+measure engagement trends and help advertisers understand
+campaign performance using AI-powered computer vision.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="icon">☁️</div>
+
+<h3>Cloud Content Management</h3>
+
+<p>
+
+Upload, schedule and manage advertisements remotely through
+a centralized dashboard without physically visiting each screen.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="icon">🎯</div>
+
+<h3>Interactive Advertising</h3>
+
+<p>
+
+Convert passive advertisements into engaging campaigns through
+QR-powered experiences such as Scan & Win,
+Meet Your Icon and Celebrate with Centauri.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= AI SECTION ================= -->
+
+<section class="analytics">
+
+<div class="analytics-left">
+
+<h2>
+
+AI Powered
+Audience Analytics
+
+</h2>
+
+<p>
+
+Centauri Networks combines Artificial Intelligence,
+Computer Vision and Cloud Computing
+to provide advertisers with meaningful audience insights.
+
+</p>
+
+<ul>
+
+<li>✔ Audience Count</li>
+
+<li>✔ Peak Audience Hours</li>
+
+<li>✔ Viewer Engagement</li>
+
+<li>✔ Campaign Performance</li>
+
+<li>✔ Real-Time Dashboard</li>
+
+</ul>
+
+</div>
+
+<div class="analytics-right">
+
+<div class="analytics-box">
+
+<h1>98%</h1>
+
+<p>
+
+Audience Detection Accuracy
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= CLOUD CMS ================= -->
+
+<section class="cloud">
+
+<h2 class="section-title">
+
+Cloud Based Content Management
+
+</h2>
+
+<p class="cloud-text">
+
+Advertisers can upload images or videos, schedule campaigns,
+manage multiple screens from anywhere and receive campaign
+analytics through a single cloud dashboard.
+
+</p>
+
+<div class="cloud-cards">
+
+<div>
+
+<h3>Remote Upload</h3>
+
+<p>
+
+Upload advertisements from anywhere.
+
+</p>
+
+</div>
+
+<div>
+
+<h3>Campaign Scheduling</h3>
+
+<p>
+
+Schedule campaigns for any date and time.
+
+</p>
+
+</div>
+
+<div>
+
+<h3>Live Dashboard</h3>
+
+<p>
+
+Track campaign performance in real time.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+/*================ FEATURES ================*/
+
+.features{
+
+padding:100px 8%;
+
+}
+
+.cards{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+margin-top:50px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.08);
+
+padding:35px;
+
+border-radius:20px;
+
+backdrop-filter:blur(10px);
+
+transition:.4s;
+
+}
+
+.card:hover{
+
+transform:translateY(-12px);
+
+box-shadow:0 0 35px rgba(0,212,255,.3);
+
+}
+
+.icon{
+
+font-size:55px;
+
+margin-bottom:20px;
+
+}
+
+.card h3{
+
+margin-bottom:20px;
+
+color:#00d4ff;
+
+}
+
+.card p{
+
+line-height:1.8;
+
+color:#d5d5d5;
+
+}
+
+/*================ AI SECTION ================*/
+
+.analytics{
+
+padding:120px 8%;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.analytics-left{
+
+width:55%;
+
+}
+
+.analytics-left h2{
+
+font-size:48px;
+
+margin-bottom:25px;
+
+color:#00d4ff;
+
+}
+
+.analytics-left p{
+
+font-size:18px;
+
+line-height:2;
+
+color:#d5d5d5;
+
+margin-bottom:25px;
+
+}
+
+.analytics-left ul{
+
+list-style:none;
+
+line-height:2.3;
+
+font-size:18px;
+
+}
+
+.analytics-right{
+
+width:35%;
+
+display:flex;
+
+justify-content:center;
+
+}
+
+.analytics-box{
+
+width:300px;
+
+height:300px;
+
+border-radius:25px;
+
+background:linear-gradient(135deg,#00d4ff,#005eff);
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+box-shadow:0 0 45px rgba(0,212,255,.4);
+
+}
+
+.analytics-box h1{
+
+font-size:70px;
+
+}
+
+.analytics-box p{
+
+margin-top:15px;
+
+font-size:18px;
+
+text-align:center;
+
+}
+
+/*================ CLOUD =================*/
+
+.cloud{
+
+padding:100px 8%;
+
+}
+
+.cloud-text{
+
+font-size:18px;
+
+line-height:2;
+
+color:#d8d8d8;
+
+margin-bottom:50px;
+
+}
+
+.cloud-cards{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+}
+
+.cloud-cards div{
+
+background:rgba(255,255,255,.05);
+
+padding:35px;
+
+border-radius:18px;
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:.4s;
+
+}
+
+.cloud-cards div:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 0 30px rgba(0,212,255,.25);
+
+}
+
+.cloud-cards h3{
+
+margin-bottom:20px;
+
+color:#00d4ff;
+
+}
+
+.cloud-cards p{
+
+line-height:1.8;
+
+color:#d5d5d5;
+
+}
+
+@media(max-width:1000px){
+
+.cards{
+
+grid-template-columns:1fr;
+
+}
+
+.analytics{
+
+flex-direction:column;
+
+}
+
+.analytics-left,
+
+.analytics-right{
+
+width:100%;
+
+}
+
+.analytics-right{
+
+margin-top:50px;
+
+}
+
+.cloud-cards{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+<!-- ================= CAMPAIGNS ================= -->
+
+<section class="campaigns" id="campaigns">
+
+<h2 class="section-title">
+Interactive Campaigns
+</h2>
+
+<div class="campaign-grid">
+
+<div class="campaign-card">
+
+<h1>🏆</h1>
+
+<h3>Scan & Win</h3>
+
+<p>
+
+Scan the QR code displayed on the billboard for a chance
+to win exciting prizes, exclusive offers and brand rewards.
+
+</p>
+
+</div>
+
+<div class="campaign-card">
+
+<h1>🌟</h1>
+
+<h3>Meet Your Icon</h3>
+
+<p>
+
+Participate in exclusive campaigns for a chance to meet
+your favourite celebrity, creator or sportsperson.
+
+</p>
+
+</div>
+
+<div class="campaign-card">
+
+<h1>🎉</h1>
+
+<h3>Celebrate With Centauri</h3>
+
+<p>
+
+Display birthday wishes, celebrations and memorable
+moments on one of the biggest digital screens in the city.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= WHY ================= -->
+
+<section class="why">
+
+<h2 class="section-title">
+
+Why Choose Centauri Networks?
+
+</h2>
+
+<div class="why-container">
+
+<div class="why-box">
+
+<h3>Traditional Billboards</h3>
+
+<ul>
+
+<li>Passive Advertising</li>
+
+<li>No Audience Analytics</li>
+
+<li>No Customer Engagement</li>
+
+<li>No Campaign Insights</li>
+
+</ul>
+
+</div>
+
+<div class="why-box active">
+
+<h3>Centauri Networks</h3>
+
+<ul>
+
+<li>AI Audience Analytics</li>
+
+<li>Interactive QR Campaigns</li>
+
+<li>Cloud Dashboard</li>
+
+<li>Real-Time Insights</li>
+
+<li>Higher Audience Engagement</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= STATS ================= -->
+
+<section class="stats">
+
+<div class="stat">
+
+<h1>AI</h1>
+
+<p>Powered Analytics</p>
+
+</div>
+
+<div class="stat">
+
+<h1>24/7</h1>
+
+<p>Cloud Management</p>
+
+</div>
+
+<div class="stat">
+
+<h1>∞</h1>
+
+<p>Campaign Possibilities</p>
+
+</div>
+
+<div class="stat">
+
+<h1>100%</h1>
+
+<p>Interactive Experience</p>
+
+</div>
+
+</section>
+
+<!-- ================= CONTACT ================= -->
+
+<section class="contact" id="contact">
+
+<h2 class="section-title">
+
+Let's Build The Future Of Advertising
+
+</h2>
+
+<p>
+
+Interested in collaborating, investing or deploying
+Centauri Networks?
+
+</p>
+
+<div class="contact-card">
+
+<h3>📞 Contact</h3>
+
+<h2>9100884623</h2>
+
+<h3>✉ Email</h3>
+
+<p>centaurinetworks@gmail.com</p>
+
+<a href="tel:9100884623" class="btn">
+
+Call Now
+
+</a>
+
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<h2>
+
+Centauri Networks
+
+</h2>
+
+<p>
+
+Transforming Outdoor Advertising Through Artificial Intelligence,
+Cloud Computing and Interactive Experiences.
+
+</p>
+
+<p>
+
+© 2026 Centauri Networks. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<style>
+
+/* CAMPAIGNS */
+
+.campaigns{
+
+padding:100px 8%;
+
+}
+
+.campaign-grid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+margin-top:50px;
+
+}
+
+.campaign-card{
+
+padding:35px;
+
+background:rgba(255,255,255,.05);
+
+border-radius:20px;
+
+border:1px solid rgba(255,255,255,.08);
+
+text-align:center;
+
+transition:.4s;
+
+}
+
+.campaign-card:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 0 35px rgba(0,212,255,.35);
+
+}
+
+.campaign-card h1{
+
+font-size:60px;
+
+margin-bottom:20px;
+
+}
+
+.campaign-card h3{
+
+color:#00d4ff;
+
+margin-bottom:15px;
+
+}
+
+.campaign-card p{
+
+line-height:1.8;
+
+color:#d5d5d5;
+
+}
+
+/* WHY */
+
+.why{
+
+padding:100px 8%;
+
+}
+
+.why-container{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:35px;
+
+margin-top:50px;
+
+}
+
+.why-box{
+
+padding:35px;
+
+border-radius:20px;
+
+background:rgba(255,255,255,.05);
+
+}
+
+.why-box.active{
+
+background:linear-gradient(135deg,#00d4ff,#0066ff);
+
+}
+
+.why-box ul{
+
+margin-top:20px;
+
+line-height:2.2;
+
+padding-left:20px;
+
+}
+
+/* STATS */
+
+.stats{
+
+padding:100px 8%;
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:25px;
+
+}
+
+.stat{
+
+text-align:center;
+
+padding:35px;
+
+background:rgba(255,255,255,.05);
+
+border-radius:18px;
+
+}
+
+.stat h1{
+
+font-size:55px;
+
+color:#00d4ff;
+
+}
+
+/* CONTACT */
+
+.contact{
+
+padding:120px 8%;
+
+text-align:center;
+
+}
+
+.contact-card{
+
+margin:auto;
+
+margin-top:45px;
+
+max-width:650px;
+
+padding:45px;
+
+background:rgba(255,255,255,.05);
+
+border-radius:20px;
+
+}
+
+.contact-card h2{
+
+margin:20px 0;
+
+font-size:34px;
+
+color:#00d4ff;
+
+}
+
+.contact-card p{
+
+margin-bottom:35px;
+
+}
+
+/* FOOTER */
+
+footer{
+
+padding:45px;
+
+text-align:center;
+
+background:#02040d;
+
+margin-top:70px;
+
+}
+
+footer h2{
+
+color:#00d4ff;
+
+margin-bottom:15px;
+
+}
+
+footer p{
+
+color:#cfcfcf;
+
+line-height:2;
+
+}
+
+@media(max-width:1000px){
+
+.campaign-grid,
+.why-container,
+.stats{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+<!-- ================= BACK TO TOP ================= -->
+
+<button id="topBtn">↑</button>
+
+<!-- ================= LOADER ================= -->
+
+<div id="loader">
+
+<div class="spinner"></div>
+
+<h2>Loading Centauri Networks...</h2>
+
+</div>
+
+<style>
+
+/*================ Back To Top ================*/
+
+#topBtn{
+
+position:fixed;
+
+right:30px;
+
+bottom:30px;
+
+width:55px;
+
+height:55px;
+
+border:none;
+
+border-radius:50%;
+
+background:#00d4ff;
+
+color:#000;
+
+font-size:25px;
+
+cursor:pointer;
+
+display:none;
+
+box-shadow:0 0 20px rgba(0,212,255,.5);
+
+transition:.3s;
+
+z-index:999;
+
+}
+
+#topBtn:hover{
+
+transform:translateY(-5px);
+
+}
+
+/*================ Loader ================*/
+
+#loader{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:#050816;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:99999;
+
+transition:1s;
+
+}
+
+.spinner{
+
+width:75px;
+
+height:75px;
+
+border:6px solid rgba(255,255,255,.15);
+
+border-top:6px solid #00d4ff;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
+margin-bottom:20px;
+
+}
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+/*================ Reveal Animation ================*/
+
+.reveal{
+
+opacity:0;
+
+transform:translateY(70px);
+
+transition:1s;
+
+}
+
+.reveal.active{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+</style>
+
+<script>
+
+/*================ Loader =================*/
+
+window.onload=function(){
+
+setTimeout(function(){
+
+document.getElementById("loader").style.opacity="0";
+
+setTimeout(function(){
+
+document.getElementById("loader").style.display="none";
+
+},700);
+
+},1000);
+
+}
+
+/*================ Scroll Reveal =================*/
+
+const reveals=document.querySelectorAll("section");
+
+window.addEventListener("scroll",function(){
+
+for(let i=0;i<reveals.length;i++){
+
+let windowHeight=window.innerHeight;
+
+let top=reveals[i].getBoundingClientRect().top;
+
+let visible=120;
+
+if(top<windowHeight-visible){
+
+reveals[i].classList.add("active");
+
+reveals[i].classList.add("reveal");
+
+}
+
+}
+
+});
+
+/*================ Back To Top =================*/
+
+let topBtn=document.getElementById("topBtn");
+
+window.onscroll=function(){
+
+if(document.body.scrollTop>300||
+
+document.documentElement.scrollTop>300){
+
+topBtn.style.display="block";
+
+}
+
+else{
+
+topBtn.style.display="none";
+
+}
+
+}
+
+topBtn.onclick=function(){
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+}
+
+/*================ Smooth Nav =================*/
+
+document.querySelectorAll("nav a").forEach(anchor=>{
+
+anchor.addEventListener("click",function(e){
+
+e.preventDefault();
+
+const target=document.querySelector(this.getAttribute("href"));
+
+target.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+});
+
+});
+
+/*================ Hero Typing Effect =================*/
+
+const heading=document.querySelector(".left h3");
+
+const text="AI Powered DOOH Advertising";
+
+let i=0;
+
+heading.innerHTML="";
+
+function typing(){
+
+if(i<text.length){
+
+heading.innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(typing,80);
+
+}
+
+}
+
+typing();
+
+/*================ Floating Logo =================*/
+
+const logo=document.querySelector(".circle");
+
+setInterval(()=>{
+
+logo.animate([
+
+{
+
+transform:"translateY(0px)"
+
+},
+
+{
+
+transform:"translateY(-12px)"
+
+},
+
+{
+
+transform:"translateY(0px)"
+
+}
+
+],{
+
+duration:2500
+
+});
+
+},2500);
+
+/*================ Card Hover Glow =================*/
+
+const cards=document.querySelectorAll(".card,.campaign-card,.why-box,.cloud-cards div,.stat");
+
+cards.forEach(card=>{
+
+card.addEventListener("mousemove",(e)=>{
+
+let x=e.offsetX;
+
+let y=e.offsetY;
+
+card.style.background=
+
+`radial-gradient(circle at ${x}px ${y}px,
+rgba(0,212,255,.22),
+rgba(255,255,255,.05))`;
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.background="rgba(255,255,255,.05)";
+
+});
+
+});
+
+</script>
+
+</body>
+
+</html>

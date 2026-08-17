@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Centauri Networks | AI Live Analytics</title><style>*{box-sizing:border-box}body{margin:0;background:#05070a;color:#f5f7fb;font-family:Arial,sans-serif}.nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:18px 5%;background:rgba(5,7,10,.92);border-bottom:1px solid #1e2730;backdrop-filter:blur(12px)}.logo{font-weight:900;letter-spacing:4px;color:#00eaff}.links{display:flex;gap:8px}.links a{color:#fff;text-decoration:none;padding:9px 12px;border-radius:8px;border:1px solid #26313b;font-size:12px}.links a.active,.links a:hover{border-color:#00eaff;color:#00eaff}.wrap{padding:34px 3%}.eyebrow{letter-spacing:5px;color:#00eaff;font-weight:800}.title{font-size:clamp(38px,5vw,72px);margin:8px 0}.sub{color:#8da0b4}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin:28px 0}.card{background:#11161c;border:1px solid #26313b;border-radius:16px;padding:20px}.label{font-size:12px;color:#8da0b4}.value{font-size:30px;font-weight:800;margin-top:12px}.main{display:grid;grid-template-columns:2fr 1fr;gap:18px}.panel{background:#11161c;border:1px solid #26313b;border-radius:18px;padding:20px}.panel h2{margin-top:0}.feed{width:100%;border-radius:12px;background:#000;display:block;min-height:300px;object-fit:contain}.ring{width:190px;height:190px;border:18px solid #26313b;border-top-color:#00eaff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:900;margin:35px auto}.bar{height:12px;background:#202b35;border-radius:20px;overflow:hidden}.fill{height:100%;background:#00eaff;width:0%}.note{margin-top:18px;padding:15px;background:#0b1015;border-radius:10px;color:#9fb0c0;font-size:13px}@media(max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.main{grid-template-columns:1fr}.links{display:none}}@media(max-width:600px){.cards{grid-template-columns:1fr}.wrap{padding:22px 4%}}</style></head><body><div class="nav"><div class="logo">CENTAURI NETWORKS</div><div class="links"><a href="/">Company</a><a href="/network">All Cities</a><a class="active" href="/ai">AI Analytics</a></div></div><main class="wrap"><div class="eyebrow">CENTAURI NETWORKS</div><h1 class="title">LIVE ANALYTICS</h1><p class="sub">Anonymous audience & attention estimation • pilot monitoring interface</p>
+<div class="city-badge" id="cityBadge">NETWORK CAMERA</div><section class="cards"><div class="card"><div class="label">People detected</div><div class="value" id="people">0</div></div><div class="card"><div class="label">Estimated engaged</div><div class="value" id="engaged">0</div></div><div class="card"><div class="label">Attention rate</div><div class="value" id="attention">0%</div></div><div class="card"><div class="label">Avg. dwell time</div><div class="value" id="dwell">0.0 sec</div></div><div class="card"><div class="label">Peak audience</div><div class="value" id="peak">0</div></div><div class="card"><div class="label">QR interactions</div><div class="value" id="qr">0</div></div></section><section class="main"><div class="panel"><h2>LIVE VIEW</h2><img class="feed" src="/video_feed" alt="Centauri AI live camera feed"><div class="note">Anonymous detection overlay. Attention is an estimate based on the current pilot vision pipeline; it is not biometric gaze identification.</div></div><div class="panel"><h2>ENGAGEMENT</h2><div class="ring" id="ring">0%</div><div class="bar"><div class="fill" id="fill"></div></div><div class="note"><b>Likely looking:</b> head/face orientation signal<br><br><b>QR:</b> verified when the campaign landing page calls <code>/qr_scan</code>.</div></div></section></main><script>
+const params = new URLSearchParams(window.location.search);
+const selectedCity = (params.get('city') || 'NETWORK').toUpperCase();
+const cityBadge = document.getElementById('cityBadge');
+if (cityBadge) cityBadge.textContent = selectedCity === 'GLOBAL' ? 'ALL SITES • LIVE AI ANALYTICS' : selectedCity + ' • LIVE AI ANALYTICS';
+
+async function refresh(){
+    try{
+        const r = await fetch('/count',{cache:'no-store'});
+        if(!r.ok) throw new Error('Analytics backend unavailable');
+        const d = await r.json();
+        document.getElementById('people').textContent=d.people;
+        document.getElementById('engaged').textContent=d.engaged;
+        document.getElementById('attention').textContent=d.attention_rate+'%';
+        document.getElementById('dwell').textContent=Number(d.avg_dwell).toFixed(1)+' sec';
+        document.getElementById('peak').textContent=d.peak_audience;
+        document.getElementById('qr').textContent=d.qr_interactions;
+        document.getElementById('ring').textContent=d.attention_rate+'%';
+        document.getElementById('fill').style.width=Math.min(100,Math.max(0,d.attention_rate))+'%';
+    }catch(e){}
+}
+setInterval(refresh,1000);
+refresh();
+</script></body></html>
